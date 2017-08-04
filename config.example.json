@@ -1,0 +1,6 @@
+{
+    "username": "username",
+    "password": "password",
+    "language": "English",
+    "preferredGroups": ["group1", "group2"]
+}
