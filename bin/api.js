@@ -39,7 +39,7 @@ class BatotoApi {
         chapters = filterChapters(chapters, config);
         for (const chapter of chapters) {
             console.log(`------Downloading chapter ${chapter.chapter}`);
-            const info = await this.getPageUrls(chapters[0].id);
+            const info = await this.getPageUrls(chapter.id);
             const folder = path.join(destinationFolder, `Chapter ${chapter.chapter}`);
             await fs.mkdirp(folder);
             await this.downloadChapter(info, folder);
