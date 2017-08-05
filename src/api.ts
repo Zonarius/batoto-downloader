@@ -6,9 +6,6 @@ import { flatten, range, partition, sortBy } from 'lodash';
 import * as _ from 'lodash';
 import * as path from 'path';
 
-const IMAGE_PREFIX = 'img';
-const IMAGE_NUMBER_COUNT = 6;
-
 export interface Credentials {
     username: string;
     password: string;
@@ -73,7 +70,7 @@ export class BatotoApi {
         for (const chapter of chapters) {
             console.log(`------Downloading chapter ${chapter.chapter}`)
             const info = await this.getPageUrls(chapter.id);
-            const folder = path.join(destinationFolder, `Chapter ${chapter.chapter}`);
+            const folder = path.join(destinationFolder, `Chapter ${lead(chapter.chapter, 4)}`);
             await fs.mkdirp(folder);
             await this.downloadChapter(info, folder);
         }
@@ -208,12 +205,12 @@ function parseChapterVolume(str: string): {name: string, volume: number, chapter
     }
 }
 
-function lead(nr: number): string {
+function lead(nr: number, length: number): string {
     const str = nr.toString();
-    if (str.length > IMAGE_NUMBER_COUNT) {
+    if (str.length > length) {
         throw new Error(`Image number too large: ${str.length}`);
     }
-    return "0".repeat(IMAGE_NUMBER_COUNT - str.length) + str
+    return "0".repeat(length - str.length) + str
 }
 
 function filterChapters(chapters: Chapter[], config: DownloadConfig): any[] {

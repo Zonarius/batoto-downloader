@@ -7,8 +7,6 @@ const fs = require("fs-extra");
 const lodash_1 = require("lodash");
 const _ = require("lodash");
 const path = require("path");
-const IMAGE_PREFIX = 'img';
-const IMAGE_NUMBER_COUNT = 6;
 class BatotoApi {
     constructor() {
         this.jar = request.jar();
@@ -40,7 +38,7 @@ class BatotoApi {
         for (const chapter of chapters) {
             console.log(`------Downloading chapter ${chapter.chapter}`);
             const info = await this.getPageUrls(chapter.id);
-            const folder = path.join(destinationFolder, `Chapter ${chapter.chapter}`);
+            const folder = path.join(destinationFolder, `Chapter ${lead(chapter.chapter, 4)}`);
             await fs.mkdirp(folder);
             await this.downloadChapter(info, folder);
         }
@@ -156,12 +154,12 @@ function parseChapterVolume(str) {
         name: res[3]
     };
 }
-function lead(nr) {
+function lead(nr, length) {
     const str = nr.toString();
-    if (str.length > IMAGE_NUMBER_COUNT) {
+    if (str.length > length) {
         throw new Error(`Image number too large: ${str.length}`);
     }
-    return "0".repeat(IMAGE_NUMBER_COUNT - str.length) + str;
+    return "0".repeat(length - str.length) + str;
 }
 function filterChapters(chapters, config) {
     return _(chapters)
